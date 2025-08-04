@@ -54,7 +54,7 @@
       width: 100%;
       height: 100%;
       background: rgba(255, 240, 245, 0.95);
-      display: none;
+      display: flex;
       justify-content: center;
       align-items: center;
       z-index: 9999;
@@ -71,20 +71,20 @@
 </head>
 <body>
 
-  <!-- Logo -->
+  <!-- 🎀 Clickable Logo -->
   <div class="logo-container" id="logoClick">
     <img src="ptt.png" alt="Ayeisha Logo">
   </div>
 
-  <!-- View Memories Link -->
+  <!-- 📸 View Memories Link -->
   <a href="#" id="viewMemories" style="display:block; margin-top:20px; color:#d9006c; font-weight:bold;">📸 View Memories</a>
 
-  <!-- Slideshow -->
-  <div id="slideshow">
-    <img id="slideImg" src="photos/1.jpg" alt="Slideshow Photo">
+  <!-- 🖼️ Slideshow -->
+  <div id="slideshow" style="display:none;">
+    <img id="slideImg" src="15.jpg" alt="Slideshow Photo">
   </div>
 
-  <!-- Birthday Message -->
+  <!-- 💬 Hidden Message -->
   <div class="message" id="message">
     🎉 <strong>Happy Birthday To You 💖</strong> 🎉<br>
     💖 On this special day, I just want to say...<br>
@@ -93,10 +93,10 @@
     🥳 You deserve all the happiness in the world. Love you always! 💝
   </div>
 
-  <!-- Audio -->
+  <!-- 🎵 Audio -->
   <audio id="birthdaySong" src="happy.mp3"></audio>
 
-  <!-- Confetti -->
+  <!-- 🎊 Confetti -->
   <canvas id="confettiCanvas"></canvas>
 
   <script>
@@ -112,10 +112,13 @@
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
-    const photos = [];
-    for (let i = 1; i <= 22; i++) {
-      photos.push(`photos/${i}.jpg`);
-    }
+    const photos = [
+      '15.jpg','2.jpg','3.jpg','7.jpg','5.jpg',
+      '9.jpg','4.jpg','8.jpg','6.jpg','10.jpg',
+      '11.jpg','12.jpg','13.jpg','1.jpg','14.jpg',
+      '16.jpg','17.jpg','18.jpg','19.jpg','20.jpg',
+      '21.jpg','22.jpg'
+    ];
 
     let index = 0;
     let interval;
@@ -130,6 +133,9 @@
         index++;
         if (index >= photos.length) {
           index = 0;
+          clearInterval(interval);
+          slideshow.style.display = 'none'; // optional: auto close
+          return;
         }
         showSlide(index);
       }, 2000);
@@ -140,9 +146,10 @@
       setTimeout(() => {
         slideImg.src = photos[i];
         slideImg.style.opacity = 1;
-      }, 300);
+      }, 500);
     }
 
+    // Click to close slideshow
     slideshow.addEventListener('click', () => {
       clearInterval(interval);
       slideshow.style.display = 'none';
@@ -150,7 +157,7 @@
       song.currentTime = 0;
     });
 
-    // Confetti logic
+    // Confetti
     let confetti = [];
     const colors = ["#ff007f", "#ffcc00", "#00e6e6", "#00cc66", "#ff5050"];
 
@@ -158,7 +165,7 @@
       for (let i = 0; i < 150; i++) {
         confetti.push({
           x: Math.random() * canvas.width,
-          y: Math.random() * -canvas.height,
+          y: Math.random() * canvas.height - canvas.height,
           size: Math.random() * 7 + 3,
           speed: Math.random() * 5 + 2,
           color: colors[Math.floor(Math.random() * colors.length)],
@@ -184,6 +191,7 @@
       requestAnimationFrame(drawConfetti);
     }
 
+    // Click logo to start birthday celebration
     logo.addEventListener('click', () => {
       msg.style.display = 'block';
       song.play();
